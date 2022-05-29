@@ -12,8 +12,8 @@ namespace Poll.Demo.Core.Entity
         public Vote Vote { get; private set; }
 
         private Voter() { }
-        
-        public Voter(Voting voting, string firstName, string lastName)
+
+        public Voter(Voting voting, string firstName, string lastName, int nationalIdentity)
         {
             if (voting == null)
                 throw new EntityValidationException("Voting not available");
@@ -26,6 +26,8 @@ namespace Poll.Demo.Core.Entity
             if (string.IsNullOrWhiteSpace(lastName))
                 throw new EntityValidationException("Voter last name must have value");
             LastName = lastName;
+            if (nationalIdentity <= 0)
+                throw new EntityValidationException("Invalid nationality identity");
         }
 
         public void DoVote(VoteType voteType)

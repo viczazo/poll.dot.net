@@ -6,6 +6,7 @@ using Poll.Demo.Application.Cqrs.Abstractions;
 using Poll.Demo.Application.Cqrs.Command;
 using Poll.Demo.Application.Model;
 using Poll.Demo.Application.Repository;
+using Poll.Demo.Core.Exceptions;
 
 namespace Poll.Demo.Application.Cqrs.CommandHandler
 {
@@ -22,11 +23,20 @@ namespace Poll.Demo.Application.Cqrs.CommandHandler
         public async Task<AppActionResult> Handle(ChangeVotingStateCommand request, CancellationToken cancellationToken)
         {
             var voting = await _votingRepository.Get(request.VotingId, cancellationToken);
+            if (voting == null)
+            {
+                return new AppActionResult
+                {
+                    IsSuccesfull = false,
+                    ErrorMessage = $"Voting with Id {request.VotingId} not found",
+                    ErrorType = ErrorType.Validation
+                };
+            }
             try
             {
                 voting.ChangeState(request.VotingState);
             }
-            catch (Exception e)
+            catch (EntityValidationException e)
             {
                 _logger.LogError(e, "Error during change voting State from {voting.state} to {voting.state}", voting.State, request.VotingState);
                 return new AppActionResult

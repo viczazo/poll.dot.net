@@ -38,7 +38,8 @@ namespace Poll.Demo.Application.Cqrs.CommandHandler
                 var voter = new Core.Entity.Voter(
                     voting,
                     request.FirstName,
-                    request.LastName);
+                    request.LastName,
+                    request.NationalityId);
                 
                 await _voterRepository.Create(voter, cancellationToken);
                 _logger.LogInformation("Voter for voting with Id:{voting.id}", request.VotingId);

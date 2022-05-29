@@ -27,12 +27,14 @@ namespace Poll.Demo.Integration.Tests
             var votingId = response.Content.Data;
             
             //Add some voters 
-            for (var i = 0; i < voters; i++)
+            for (var i = 1; i <= voters; i++)
             {
-                var vote = await _apiClient.AddVoter(new CreateVoter
+                var voter = await _apiClient.AddVoter(new CreateVoter
                     { FirstName = "Some", LastName = "Voter", VotingId = votingId, NationalityId = i});
                 
-                voterIds.Add(vote.Content!.Data);
+                Assert.True(voter.IsSuccessStatusCode);
+                Assert.True(voter.Content.Data > 0);
+                voterIds.Add(voter.Content!.Data);
             }
             
             //Open voting

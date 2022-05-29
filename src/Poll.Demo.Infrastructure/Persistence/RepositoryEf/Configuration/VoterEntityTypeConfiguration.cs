@@ -18,5 +18,7 @@ public class VoterEntityTypeConfiguration : IEntityTypeConfiguration<Voter>
             .WithOne(x => x.Voter)
             .HasForeignKey<Vote>();
         builder.Navigation(nameof(Voter.Vote));
+        builder.HasIndex(x => x.NationalIdentity)
+            .IsUnique();
     }
 }
