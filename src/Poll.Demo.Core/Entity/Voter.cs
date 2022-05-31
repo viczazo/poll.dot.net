@@ -5,7 +5,7 @@ namespace Poll.Demo.Core.Entity
     public class Voter
     {
         public int Id { get; }
-        public int NationalIdentity { get; set; }
+        public int NationalIdentity { get; }
         public string FirstName { get; }
         public string LastName { get; }
         public Voting Voting { get; }
